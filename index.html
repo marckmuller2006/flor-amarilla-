@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFE3A0">
+<title>黄色い花をどうぞ、僕のお姫様</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='%23FFC53D'%3E%3Ccircle cx='20' cy='9' r='7'/%3E%3Ccircle cx='29' cy='15.5' r='7'/%3E%3Ccircle cx='29' cy='24.5' r='7'/%3E%3Ccircle cx='20' cy='31' r='7'/%3E%3Ccircle cx='11' cy='24.5' r='7'/%3E%3Ccircle cx='11' cy='15.5' r='7'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='6.5' fill='%238C5A1E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Zen+Old+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#7C4A03;
+  --ink-soft:#9A6A1E;
+  --heart:#E0728F;
+  --paper:#FFFDF4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden;width:100%}
+body{
+  min-height:100vh;
+  min-height:100dvh;
+  font-family:'Cormorant Garamond','Zen Old Mincho',Georgia,'Times New Roman',serif;
+  background:linear-gradient(180deg,#FFFBEA 0%,#FFF3C4 34%,#FFE3A0 66%,#FFD08A 100%);
+  position:relative;
+  -webkit-text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:4;
+  background:radial-gradient(ellipse at 50% 40%,rgba(255,255,255,0) 52%,rgba(190,120,20,.16) 100%);
+}
+/* ---------- cielo primaveral ---------- */
+.sun{
+  position:fixed;top:-22vh;right:-14vw;width:62vw;height:62vw;border-radius:50%;
+  background:radial-gradient(circle at center,rgba(255,214,102,.85) 0%,rgba(255,214,102,.28) 42%,rgba(255,214,102,0) 70%);
+  pointer-events:none;z-index:1;animation:sunPulse 9s ease-in-out infinite alternate;
+}
+@keyframes sunPulse{from{opacity:.85;transform:scale(1)}to{opacity:1;transform:scale(1.05)}}
+.cloud{position:fixed;z-index:1;background:rgba(255,255,255,.85);border-radius:100px;filter:blur(14px);pointer-events:none;left:-320px}
+.cloud::before{content:"";position:absolute;left:12%;top:-58%;width:55%;height:120%;background:inherit;border-radius:50%}
+.cloud::after{content:"";position:absolute;right:16%;top:-40%;width:38%;height:96%;background:inherit;border-radius:50%}
+.c1{width:280px;height:34px;top:12%;animation:drift 95s linear infinite}
+.c2{width:200px;height:26px;top:24%;opacity:.7;animation:drift 130s linear infinite;animation-delay:-60s}
+@keyframes drift{from{left:-320px}to{left:104vw}}
+.bokeh{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:2;
+  background:radial-gradient(circle,rgba(255,255,255,.85) 0%,rgba(255,240,190,.35) 45%,rgba(255,240,190,0) 72%);
+  animation:bokehFloat var(--bd) ease-in-out infinite alternate;
+}
+@keyframes bokehFloat{from{transform:translate(0,0)}to{transform:translate(var(--bx),var(--by))}}
+/* ---------- pétalos que caen ---------- */
+#petalRain{position:fixed;inset:0;pointer-events:none;z-index:8;overflow:hidden}
+.fall-petal{position:absolute;top:-6vh;animation:fallDown var(--dur) linear forwards;will-change:transform}
+@keyframes fallDown{to{transform:translateY(112vh)}}
+.fall-petal .sway{animation:swayX 2.4s ease-in-out infinite alternate}
+@keyframes swayX{from{transform:translateX(calc(var(--sway) * -1))}to{transform:translateX(var(--sway))}}
+.fall-petal svg{display:block;width:var(--size);height:var(--size);animation:spin var(--sd) linear infinite;filter:drop-shadow(0 1px 1px rgba(120,60,0,.18))}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ---------- explosión de pétalos ---------- */
+.burst-petal{position:fixed;z-index:9;pointer-events:none;will-change:transform,opacity;animation:burstFly var(--bdur) cubic-bezier(.18,.7,.45,1) forwards}
+.burst-petal svg{display:block;width:var(--size);height:var(--size);filter:drop-shadow(0 1px 2px rgba(120,60,0,.2))}
+@keyframes burstFly{
+  0%{transform:translate(0,0) rotate(0deg) scale(.5);opacity:0}
+  12%{opacity:1}
+  70%{transform:translate(calc(var(--dx) * .85),var(--dy)) rotate(calc(var(--rot) * .8)) scale(1)}
+  100%{transform:translate(var(--dx),calc(var(--dy) + 130px)) rotate(var(--rot)) scale(.92);opacity:0}
+}
+/* ---------- corazones que suben ---------- */
+#heartRain{position:fixed;inset:0;pointer-events:none;z-index:7;overflow:hidden}
+.heart-rise{position:absolute;bottom:-8vh;animation:riseUp var(--hd) linear forwards}
+@keyframes riseUp{to{transform:translateY(-118vh)}}
+.heart-rise .sway{animation:swayX 2.6s ease-in-out infinite alternate}
+.heart-rise .fade{animation:heartFade var(--hd) linear forwards}
+@keyframes heartFade{0%{opacity:0}15%{opacity:var(--hop)}78%{opacity:var(--hop)}100%{opacity:0}}
+.heart-rise svg{display:block;width:var(--size);height:var(--size)}
+/* ---------- marco tipo tarjeta ---------- */
+.frame{position:fixed;inset:14px;border:1.5px solid rgba(180,100,20,.30);border-radius:16px;pointer-events:none;z-index:6}
+.frame::before{content:"";position:absolute;inset:5px;border:1px solid rgba(180,100,20,.16);border-radius:11px}
+/* ---------- escena central ---------- */
+.scene{
+  position:relative;z-index:5;min-height:100vh;
+  min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:44px 20px 86px;text-align:center;
+}
+.gift-tag{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Great Vibes','Zen Old Mincho',cursive;font-size:clamp(20px,3vw,26px);color:#B4770F;
+  opacity:0;animation:fadeUp 1.2s ease .4s forwards;
+}
+.gift-tag .mini-heart{width:13px;height:13px;fill:var(--heart);animation:beat 1.7s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.28)}60%{transform:scale(.92)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+/* ---------- flor ---------- */
+.flower-wrap{
+  position:relative;width:min(300px,64vw);cursor:pointer;outline:none;
+  -webkit-tap-highlight-color:transparent;user-select:none;margin:4px 0;
+}
+.flower-wrap:focus-visible{border-radius:24px;box-shadow:0 0 0 3px rgba(245,158,11,.45)}
+.plant-svg{width:100%;height:auto;display:block;overflow:visible;filter:drop-shadow(0 16px 22px rgba(150,80,0,.22))}
+.plant{animation:plantSway 5.6s ease-in-out infinite alternate;transform-origin:200px 508px;transform-box:view-box}
+@keyframes plantSway{from{transform:rotate(-1.7deg)}to{transform:rotate(1.7deg)}}
+.petal{
+  transform:rotate(var(--ang)) scale(.3);
+  transform-origin:200px 150px;transform-box:view-box;
+  transition:transform 1.15s cubic-bezier(.34,1.45,.5,1) var(--d,0ms);
+}
+.bloomed .petal{transform:rotate(var(--ang)) scale(1)}
+.petal-front{stroke:#E8960C;stroke-width:.8;opacity:.96}
+.sepal{
+  transform:rotate(var(--ang)) scale(.6);
+  transform-origin:200px 150px;transform-box:view-box;
+  stroke:#3F662A;stroke-width:.6;opacity:.95;
+}
+.flower-wrap.bounce .plant-svg{animation:bounce .55s ease}
+@keyframes bounce{0%{transform:scale(1)}30%{transform:scale(1.05,.93)}55%{transform:scale(.97,1.04)}100%{transform:scale(1)}}
+.hint{
+  position:absolute;left:50%;top:44%;transform:translateX(-50%);
+  font-style:italic;font-size:clamp(15px,2.4vw,18px);color:var(--ink-soft);
+  background:rgba(255,250,230,.6);padding:5px 14px;border-radius:999px;white-space:nowrap;
+  animation:hintPulse 2.2s ease-in-out infinite;user-select:none;backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+@keyframes hintPulse{0%,100%{opacity:.5}50%{opacity:1}}
+.hint.hide{display:none}
+/* ---------- destellos ---------- */
+.sparkles{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1s ease .6s}
+.sparkles.on{opacity:1}
+.spark{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);animation:twinkle var(--td) ease-in-out var(--tdel) infinite alternate}
+.spark svg{width:100%;height:100%;fill:#FFD54A;filter:drop-shadow(0 0 4px rgba(255,190,40,.8))}
+@keyframes twinkle{from{transform:scale(.35) rotate(0deg);opacity:.25}to{transform:scale(1) rotate(35deg);opacity:1}}
+/* ---------- título ---------- */
+.title{
+  font-family:'Great Vibes','Zen Old Mincho',cursive;font-weight:400;color:var(--ink);
+  font-size:clamp(28px,5.5vw,50px);line-height:1.3;margin-top:10px;
+  opacity:0;transform:translateY(16px);transition:opacity 1.1s ease,transform 1.1s ease;
+  padding:0 4px;
+}
+.title.show{opacity:1;transform:none}
+.princess{
+  display:block;font-size:clamp(34px,8vw,70px);line-height:1.3;padding:0 8px 6px;
+  background:linear-gradient(100deg,#8A4E06 0%,#C77800 20%,#F5A623 40%,#FFD966 50%,#F5A623 60%,#C77800 80%,#8A4E06 100%);
+  background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shimmer 8s linear infinite;
+}
+@keyframes shimmer{from{background-position:0% 0}to{background-position:200% 0}}
+.flourish{width:min(240px,60vw);height:auto;margin-top:2px;opacity:0;transition:opacity .9s ease}
+.flourish path{stroke-dasharray:320;stroke-dashoffset:320;transition:stroke-dashoffset 1.5s ease .45s}
+.flourish.show{opacity:1}
+.flourish.show path{stroke-dashoffset:0}
+.sub{
+  font-style:italic;color:var(--ink-soft);font-size:clamp(14px,2.3vw,18px);line-height:1.8;
+  margin-top:12px;max-width:520px;opacity:0;transform:translateY(10px);
+  transition:opacity 1s ease,transform 1s ease;
+  padding:0 8px;
+}
+.sub.show{opacity:1;transform:none;transition-delay:.2s}
+/* ---------- botón carta ---------- */
+.letter-btn{
+  margin-top:22px;font-family:'Cormorant Garamond','Zen Old Mincho',Georgia,serif;font-weight:600;font-size:16px;letter-spacing:.4px;
+  color:#8A4E06;background:rgba(255,252,240,.85);border:1.5px solid #E8A317;border-radius:999px;
+  padding:12px 26px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;
+  box-shadow:0 4px 14px rgba(184,120,20,.18);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .9s ease,transform .9s ease,box-shadow .25s,background .25s;
+  -webkit-appearance:none;appearance:none;
+}
+.letter-btn.show{opacity:1;transform:none;transition-delay:.45s}
+.letter-btn:hover{background:#FFF6DC;box-shadow:0 6px 20px rgba(184,120,20,.3);transform:translateY(-2px)}
+.letter-btn:active{transform:scale(.97)}
+.letter-btn svg{width:17px;height:17px;flex-shrink:0}
+/* ---------- pie de página ---------- */
+.footer{
+  position:fixed;left:0;right:0;bottom:15px;text-align:center;font-size:11.5px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:#A9781E;z-index:6;
+  opacity:0;transition:opacity 1.2s ease .2s;pointer-events:none;
+  padding:0 16px;
+}
+.footer.show{opacity:.92}
+/* ---------- botón música ---------- */
+.music-btn{
+  position:fixed;right:20px;bottom:20px;z-index:60;width:46px;height:46px;border-radius:50%;
+  border:1.5px solid #E8A317;background:rgba(255,252,240,.92);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(184,120,20,.22);transition:transform .2s,background .3s;
+  -webkit-appearance:none;appearance:none;padding:0;
+}
+.music-btn:hover{transform:scale(1.08)}
+.music-btn:active{transform:scale(.92)}
+.music-btn svg{width:20px;height:20px;fill:#B4770F}
+.music-btn.on{background:linear-gradient(135deg,#FFD35C,#F5A623);border-color:#C77800}
+.music-btn.on svg{fill:#5F2E00}
+.music-btn.attn::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid rgba(245,158,11,.7);animation:ring 1.6s ease-out 3;
+}
+@keyframes ring{from{transform:scale(.6);opacity:1}to{transform:scale(1.5);opacity:0}}
+/* ---------- carta ---------- */
+.letter-overlay{
+  position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+  padding:16px;
+  padding-top:max(16px, env(safe-area-inset-top));
+  padding-bottom:max(16px, env(safe-area-inset-bottom));
+  background:rgba(93,53,16,.35);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+  opacity:0;pointer-events:none;transition:opacity .45s ease;
+}
+.letter-overlay.open{opacity:1;pointer-events:auto}
+.letter{
+  position:relative;
+  width:100%;
+  max-width:540px;
+  max-height:calc(100dvh - 32px);
+  max-height:calc(100vh - 32px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  background:var(--paper);
+  border:1px solid #EDD9A8;
+  border-radius:6px 18px 6px 18px;
+  padding:30px 28px 22px;
+  box-shadow:0 30px 70px rgba(66,34,4,.35);
+  transform:translateY(26px) scale(.96);
+  transition:transform .5s cubic-bezier(.2,1.2,.4,1);
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+}
+.letter-overlay.open .letter{transform:none}
+.letter::before{
+  content:"";position:absolute;inset:8px;border:1px dashed rgba(190,140,60,.45);
+  border-radius:3px 14px 3px 14px;pointer-events:none;
+}
+.letter .mini-flower{display:block;margin:0 auto 6px;width:34px;height:34px}
+.letter .date{
+  text-align:center;font-size:11px;font-weight:600;letter-spacing:1.8px;
+  text-transform:uppercase;color:#B08134;margin-bottom:10px;
+  padding:0 8px;line-height:1.6;
+}
+.letter h3{
+  font-family:'Great Vibes','Zen Old Mincho',cursive;font-weight:400;
+  font-size:clamp(24px,5.5vw,34px);color:#8A4E06;text-align:center;
+  margin-bottom:16px;line-height:1.35;
+  word-wrap:break-word;overflow-wrap:break-word;
+}
+.letter p{
+  font-size:clamp(14.5px,2.2vw,16.5px);
+  line-height:2;
+  color:#6B4A1F;
+  margin-bottom:14px;
+  text-align:left;
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+  word-break:normal;
+  line-break:strict;
+  letter-spacing:.02em;
+}
+.letter .signature{
+  font-family:'Great Vibes','Zen Old Mincho',cursive;font-size:22px;
+  color:#B4770F;text-align:right;margin-top:18px;
+}
+.letter .close-btn{
+  display:block;margin:20px auto 0;
+  font-family:'Cormorant Garamond','Zen Old Mincho',Georgia,serif;font-weight:600;font-size:15px;
+  letter-spacing:.6px;color:#8A4E06;background:none;border:1.5px solid #D9A441;border-radius:999px;
+  padding:10px 32px;cursor:pointer;transition:background .25s;
+  -webkit-appearance:none;appearance:none;
+}
+.letter .close-btn:hover{background:#FFF3D4}
+.letter .close-btn:active{transform:scale(.97);background:#FFF3D4}
+
+/* ---------- responsive / móvil ---------- */
+@media (max-width:480px){
+  .scene{padding:36px 16px 92px;gap:4px}
+  .frame{inset:8px}
+  .frame::before{inset:4px}
+  .music-btn{right:14px;bottom:14px;width:44px;height:44px}
+  .footer{font-size:10px;letter-spacing:1.4px;bottom:12px}
+  .letter-overlay{padding:10px;padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom))}
+  .letter{
+    padding:26px 20px 20px;
+    border-radius:6px 16px 6px 16px;
+    max-height:calc(100dvh - 20px);
+    max-height:calc(100vh - 20px);
+  }
+  .letter::before{inset:6px}
+  .letter p{
+    font-size:14.5px;
+    line-height:1.95;
+    margin-bottom:13px;
+    text-align:left;
+  }
+  .letter h3{font-size:26px;margin-bottom:14px}
+  .letter .signature{font-size:20px}
+  .title{font-size:clamp(26px,7vw,38px);line-height:1.35}
+  .princess{font-size:clamp(32px,10vw,52px);padding:0 4px 4px}
+  .sub{font-size:14px;line-height:1.8}
+  .letter-btn{font-size:15px;padding:11px 22px}
+}
+/* iPhone muy pequeños (SE, mini) */
+@media (max-width:375px){
+  .scene{padding:28px 12px 88px}
+  .letter{padding:22px 16px 18px}
+  .letter p{font-size:13.8px;line-height:1.9}
+  .letter h3{font-size:23px}
+}
+/* Pantallas con notch horizontal */
+@media (orientation:landscape) and (max-height:500px){
+  .letter{max-height:calc(100dvh - 16px);padding:20px 22px}
+  .letter p{font-size:13.5px;line-height:1.75;margin-bottom:10px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div class="sun" aria-hidden="true"></div>
+<div class="cloud c1" aria-hidden="true"></div>
+<div class="cloud c2" aria-hidden="true"></div>
+<div id="petalRain" aria-hidden="true"></div>
+<div id="heartRain" aria-hidden="true"></div>
+<div class="frame" aria-hidden="true"></div>
+
+<main class="scene">
+  <div class="gift-tag">
+    <svg class="mini-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <span>あなたへの小さな贈り物</span>
+    <svg class="mini-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  </div>
+
+  <div class="flower-wrap" id="flowerWrap" role="button" tabindex="0" aria-label="花をタッチして咲かせてください">
+    <svg id="plantSvg" class="plant-svg" viewBox="-12 -16 424 536" aria-hidden="true">
+      <defs>
+        <linearGradient id="pgFront" gradientUnits="userSpaceOnUse" x1="200" y1="116" x2="200" y2="16">
+          <stop offset="0" stop-color="#E8940F"/>
+          <stop offset="0.42" stop-color="#FFC53D"/>
+          <stop offset="1" stop-color="#FFE9A0"/>
+        </linearGradient>
+        <linearGradient id="pgBack" gradientUnits="userSpaceOnUse" x1="200" y1="116" x2="200" y2="16">
+          <stop offset="0" stop-color="#C86F0A"/>
+          <stop offset="0.5" stop-color="#EFA82B"/>
+          <stop offset="1" stop-color="#F8C96A"/>
+        </linearGradient>
+        <radialGradient id="centerGrad" gradientUnits="userSpaceOnUse" cx="200" cy="150" r="34">
+          <stop offset="0" stop-color="#A86E22"/>
+          <stop offset="0.6" stop-color="#8C5A1E"/>
+          <stop offset="1" stop-color="#5D3510"/>
+        </radialGradient>
+        <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#7CB356"/>
+          <stop offset="1" stop-color="#4E7A2E"/>
+        </linearGradient>
+        <linearGradient id="stemGrad" gradientUnits="userSpaceOnUse" x1="0" y1="170" x2="0" y2="510">
+          <stop offset="0" stop-color="#6AA247"/>
+          <stop offset="1" stop-color="#466F2C"/>
+        </linearGradient>
+      </defs>
+      <g class="plant">
+        <path d="M200 175 C 195 250, 209 330, 198 385 C 192 428, 201 468, 196 508" fill="none" stroke="url(#stemGrad)" stroke-width="9" stroke-linecap="round"/>
+        <path d="M198 400 C 160 386, 128 396, 112 436 C 118 442, 150 446, 176 432 C 190 424, 196 412, 198 400 Z" fill="url(#leafGrad)"/>
+        <path d="M196 402 C 172 408, 148 418, 126 432" fill="none" stroke="#3F662A" stroke-width="2" opacity="0.5"/>
+        <path d="M196 452 C 232 444, 262 456, 274 492 C 266 498, 236 500, 214 486 C 202 478, 198 464, 196 452 Z" fill="url(#leafGrad)"/>
+        <path d="M198 456 C 222 462, 244 472, 262 484" fill="none" stroke="#3F662A" stroke-width="2" opacity="0.5"/>
+        <g id="sepals"></g>
+        <g id="petalsBack"></g>
+        <g id="petalsFront"></g>
+        <g id="center">
+          <circle cx="200" cy="150" r="30" fill="url(#centerGrad)"/>
+          <circle cx="200" cy="150" r="30" fill="none" stroke="#4A2A0E" stroke-width="1" opacity="0.4"/>
+          <g id="dots"></g>
+        </g>
+      </g>
+    </svg>
+    <div id="sparkles" class="sparkles" aria-hidden="true"></div>
+    <div id="hint" class="hint">花をタッチして</div>
+  </div>
+
+  <h1 class="title" id="title">黄色い花をどうぞ、<span class="princess">僕のお姫様</span></h1>
+
+  <svg class="flourish" id="flourish" viewBox="0 0 260 22" aria-hidden="true">
+    <defs>
+      <linearGradient id="fg" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#F5A623"/>
+        <stop offset="0.5" stop-color="#C77800"/>
+        <stop offset="1" stop-color="#8A4E06"/>
+      </linearGradient>
+    </defs>
+    <path d="M6 14 C 60 4, 120 20, 160 12 C 190 6, 230 14, 254 10" fill="none" stroke="url(#fg)" stroke-width="2.6" stroke-linecap="round"/>
+  </svg>
+
+  <p class="sub" id="sub">この花があなたに、あなたが僕の人生にもたらしてくれたのと同じくらいの<br>幸運と喜びをもたらしますように。</p>
+
+  <button class="letter-btn" id="letterBtn" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5h18v13H3z" fill="none" stroke="#8A4E06" stroke-width="1.6"/><path d="M3 6.5l9 6.5 9-6.5" fill="none" stroke="#8A4E06" stroke-width="1.6"/></svg>
+    <span>手紙を読む</span>
+  </button>
+</main>
+
+<footer class="footer" id="footer">9月21日 ・ 黄色い花の日 ・ ペルー</footer>
+
+<button class="music-btn" id="musicBtn" type="button" aria-label="音楽をオンにする">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+</button>
+
+<!-- ===== MÚSICA DE FONDO ===== -->
+<audio id="bgMusic" loop preload="auto" playsinline webkit-playsinline>
+  <source src="flor-amarilla.mp3" type="audio/mpeg">
+</audio>
+
+<div class="letter-overlay" id="letterOverlay" role="dialog" aria-modal="true" aria-label="ラブレター">
+  <div class="letter">
+    <svg class="mini-flower" viewBox="0 0 40 40" aria-hidden="true">
+      <g fill="#FFC53D">
+        <ellipse cx="20" cy="10" rx="5.5" ry="8"/>
+        <ellipse cx="20" cy="30" rx="5.5" ry="8"/>
+        <ellipse cx="10" cy="20" rx="8" ry="5.5"/>
+        <ellipse cx="30" cy="20" rx="8" ry="5.5"/>
+        <ellipse cx="13" cy="13" rx="6.5" ry="6.5"/>
+        <ellipse cx="27" cy="13" rx="6.5" ry="6.5"/>
+        <ellipse cx="13" cy="27" rx="6.5" ry="6.5"/>
+        <ellipse cx="27" cy="27" rx="6.5" ry="6.5"/>
+      </g>
+      <circle cx="20" cy="20" r="6" fill="#8C5A1E"/>
+      <circle cx="17.5" cy="18" r="1.3" fill="#D9A441"/>
+      <circle cx="22.5" cy="21.5" r="1.3" fill="#D9A441"/>
+      <circle cx="20" cy="16.5" r="1.1" fill="#D9A441"/>
+    </svg>
+    <div class="date">9月21日 ・ 黄色い花の日</div>
+    <h3>ミヤ、愛しい人へ</h3>
+    <p>カレンダーの上では、黄色い花の日は昨日だったけれど。僕にとっては、あなたが僕の人生でどれほど大きな存在かを伝えるのに、どんな日だって完璧なんだ。</p>
+    <p>最高の自分をあなたに捧げるのに、特別な日なんていらない。あなたを選ぶのに、理由なんていらない。この黄色い花が、あなたにとっての光の象徴になりますように。完璧じゃなくても、罪悪感を背負わなくても、あなたは愛され、大切にされ、素敵な時間を過ごすに値するんだと、思い出させてくれますように。</p>
+    <p>僕はここにいるよ。あなたを支えて、いつも安心して愛されていると感じられる場所を、あなたの隣で一緒に築いていく。僕のプリンセスでいてくれて、僕の女王でいてくれて、僕の未来の妻でいてくれて、本当にありがとう。大好きだよ。&lt;333</p>
+    <div class="signature">愛を込めて</div>
+    <button class="close-btn" id="closeLetter" type="button">閉じる</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s){return document.querySelector(s)};
+  var SVGNS="http://www.w3.org/2000/svg";
+  var PETAL="M200 116 C 186 108, 172 84, 172 58 C 172 34, 184 18, 200 16 C 216 18, 228 34, 228 58 C 228 84, 214 108, 200 116 Z";
+  var SHADES=["#FFDE7A","#FFC53D","#F6B93B","#FFD966","#F0A82B"];
+  var HEARTS=["#E0728F","#EC8FA6","#D9536F","#F2A3B5"];
+
+  /* ---------- pétalos, sépalos y centro de la flor ---------- */
+  var back=$("#petalsBack"),front=$("#petalsFront"),sepals=$("#sepals"),dots=$("#dots");
+  var N=12,i,j,k;
+  for(i=0;i<N;i++){
+    var sp=document.createElementNS(SVGNS,"path");
+    sp.setAttribute("d",PETAL);
+    sp.setAttribute("fill","url(#leafGrad)");
+    sp.setAttribute("class","sepal");
+    sp.style.setProperty("--ang",(i*30+15)+"deg");
+    sepals.appendChild(sp);
+
+    var bp=document.createElementNS(SVGNS,"path");
+    bp.setAttribute("d",PETAL);
+    bp.setAttribute("fill","url(#pgBack)");
+    bp.setAttribute("class","petal petal-back");
+    bp.style.setProperty("--ang",(i*30+15)+"deg");
+    bp.style.setProperty("--d",(i*45)+"ms");
+    back.appendChild(bp);
+
+    var fp=document.createElementNS(SVGNS,"path");
+    fp.setAttribute("d",PETAL);
+    fp.setAttribute("fill","url(#pgFront)");
+    fp.setAttribute("class","petal petal-front");
+    fp.style.setProperty("--ang",(i*30)+"deg");
+    fp.style.setProperty("--d",(360+i*55)+"ms");
+    front.appendChild(fp);
+  }
+  for(j=0;j<26;j++){
+    var c=document.createElementNS(SVGNS,"circle");
+    var a=Math.random()*Math.PI*2,r=9+Math.random()*17;
+    c.setAttribute("cx",(200+Math.cos(a)*r).toFixed(1));
+    c.setAttribute("cy",(150+Math.sin(a)*r).toFixed(1));
+    c.setAttribute("r",(1.6+Math.random()*1.6).toFixed(1));
+    c.setAttribute("fill",j%3?"#D9A441":"#8C5A1E");
+    dots.appendChild(c);
+  }
+
+  /* ---------- bokeh de luz ---------- */
+  for(k=0;k<9;k++){
+    var b=document.createElement("div");b.className="bokeh";
+    var s=50+Math.random()*120;
+    b.style.width=b.style.height=s.toFixed(0)+"px";
+    b.style.left=(Math.random()*100).toFixed(0)+"vw";
+    b.style.top=(Math.random()*100).toFixed(0)+"vh";
+    b.style.opacity=(0.22+Math.random()*0.28).toFixed(2);
+    b.style.setProperty("--bd",(8+Math.random()*8).toFixed(1)+"s");
+    b.style.setProperty("--bx",(Math.random()*70-35).toFixed(0)+"px");
+    b.style.setProperty("--by",(Math.random()*70-35).toFixed(0)+"px");
+    document.body.appendChild(b);
+  }
+
+  /* ---------- lluvia de pétalos ---------- */
+  var petalRain=$("#petalRain"),petalCount=0;
+  function petalSVG(fill){
+    return '<svg viewBox="0 0 20 20"><path d="M10 .8 C14.6 4 16.6 9.6 10 19.2 C3.4 9.6 5.4 4 10 .8 Z" fill="'+fill+'"/><path d="M10 3 L10 15.5" stroke="rgba(160,90,10,.25)" stroke-width="1" fill="none"/></svg>';
+  }
+  function spawnPetal(){
+    if(document.hidden||petalCount>24)return;
+    var d=document.createElement("div");d.className="fall-petal";
+    d.style.setProperty("--dur",(7+Math.random()*6).toFixed(1)+"s");
+    d.style.setProperty("--sway",(16+Math.random()*34).toFixed(0)+"px");
+    d.style.setProperty("--size",(13+Math.random()*15).toFixed(0)+"px");
+    d.style.setProperty("--sd",(2.5+Math.random()*3.5).toFixed(1)+"s");
+    d.style.left=(Math.random()*96).toFixed(1)+"vw";
+    d.style.animationDelay="-"+(Math.random()*6).toFixed(1)+"s";
+    var sw=document.createElement("div");sw.className="sway";
+    sw.style.animationDuration=(1.8+Math.random()*1.6).toFixed(1)+"s";
+    sw.style.animationDelay="-"+(Math.random()*2).toFixed(1)+"s";
+    sw.innerHTML=petalSVG(SHADES[Math.floor(Math.random()*SHADES.length)]);
+    d.appendChild(sw);
+    d.addEventListener("animationend",function(){petalCount--;d.remove();});
+    petalRain.appendChild(d);petalCount++;
+  }
+  for(var q=0;q<9;q++)spawnPetal();
+  setInterval(spawnPetal,700);
+
+  /* ---------- explosión de pétalos ---------- */
+  function burst(x,y,n){
+    n=n||16;
+    for(var m=0;m<n;m++){
+      var el=document.createElement("div");el.className="burst-petal";
+      var size=12+Math.random()*14;
+      el.style.setProperty("--size",size.toFixed(0)+"px");
+      var ang=Math.random()*Math.PI*2,dist=90+Math.random()*150;
+      el.style.setProperty("--dx",(Math.cos(ang)*dist).toFixed(0)+"px");
+      el.style.setProperty("--dy",(Math.sin(ang)*dist*0.62-80).toFixed(0)+"px");
+      el.style.setProperty("--rot",((Math.random()*720-360)|0)+"deg");
+      el.style.setProperty("--bdur",(0.9+Math.random()*0.7).toFixed(2)+"s");
+      el.style.left=x.toFixed(0)+"px";
+      el.style.top=y.toFixed(0)+"px";
+      el.style.marginLeft=(-size/2).toFixed(0)+"px";
+      el.style.marginTop=(-size/2).toFixed(0)+"px";
+      el.innerHTML=petalSVG(SHADES[Math.floor(Math.random()*SHADES.length)]);
+      el.addEventListener("animationend",function(){this.remove();});
+      document.body.appendChild(el);
+    }
+  }
+
+  /* ---------- corazones que suben ---------- */
+  var heartRain=$("#heartRain");
+  function heartSVG(fill){
+    return '<svg viewBox="0 0 24 24"><path fill="'+fill+'" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+  }
+  function spawnHeart(){
+    if(document.hidden)return;
+    var h=document.createElement("div");h.className="heart-rise";
+    var size=11+Math.random()*12;
+    var hd=(8+Math.random()*5).toFixed(1);
+    h.style.setProperty("--size",size.toFixed(0)+"px");
+    h.style.setProperty("--hd",hd+"s");
+    h.style.setProperty("--hop",(0.32+Math.random()*0.3).toFixed(2));
+    h.style.left=(3+Math.random()*94).toFixed(1)+"vw";
+    var sw=document.createElement("div");sw.className="sway";
+    sw.style.animationDuration=(2.2+Math.random()*1.8).toFixed(1)+"s";
+    var fd=document.createElement("div");fd.className="fade";
+    fd.style.animationDuration=hd+"s";
+    fd.innerHTML=heartSVG(HEARTS[Math.floor(Math.random()*HEARTS.length)]);
+    sw.appendChild(fd);
+    h.appendChild(sw);
+    h.addEventListener("animationend",function(){h.remove();});
+    heartRain.appendChild(h);
+  }
+  function startHearts(){
+    spawnHeart();
+    setTimeout(spawnHeart,1200);
+    setTimeout(spawnHeart,2600);
+    setInterval(spawnHeart,3600);
+  }
+
+  /* ---------- destellos ---------- */
+  var sparkles=$("#sparkles");
+  var SP=[[6,4],[16,26],[84,7],[90,28],[3,36],[80,52],[26,58],[95,55],[60,66],[12,12]];
+  SP.forEach(function(pos){
+    var st=document.createElement("div");st.className="spark";
+    st.style.setProperty("--x",pos[0]+"%");
+    st.style.setProperty("--y",pos[1]+"%");
+    st.style.setProperty("--size",(9+Math.random()*13).toFixed(0)+"px");
+    st.style.setProperty("--td",(1.2+Math.random()*1.2).toFixed(2)+"s");
+    st.style.setProperty("--tdel",(-Math.random()*2).toFixed(2)+"s");
+    st.innerHTML='<svg viewBox="0 0 20 20"><path d="M10 0 L12 8 L20 10 L12 12 L10 20 L8 12 L0 10 L8 8 Z"/></svg>';
+    sparkles.appendChild(st);
+  });
+
+  /* ---------- florecer ---------- */
+  var wrap=$("#flowerWrap"),svg=$("#plantSvg"),hint=$("#hint");
+  var title=$("#title"),flourish=$("#flourish"),sub=$("#sub");
+  var letterBtn=$("#letterBtn"),footer=$("#footer"),musicBtn=$("#musicBtn");
+  var bgMusic=$("#bgMusic");
+  bgMusic.volume=0.55;
+  var bloomed=false,autoTimer=null;
+  function headPoint(){
+    var r=svg.getBoundingClientRect();
+    return {x:r.left+r.width*0.5,y:r.top+r.height*0.31};
+  }
+  function bloom(){
+    if(bloomed)return;
+    bloomed=true;
+    clearTimeout(autoTimer);
+    svg.classList.add("bloomed");
+    hint.classList.add("hide");
+    var p=headPoint();
+    setTimeout(function(){burst(p.x,p.y,26);},380);
+    setTimeout(function(){title.classList.add("show");},1250);
+    setTimeout(function(){flourish.classList.add("show");sub.classList.add("show");},1650);
+    setTimeout(function(){
+      letterBtn.classList.add("show");
+      footer.classList.add("show");
+      sparkles.classList.add("on");
+      startHearts();
+      /* intenta arrancar la música automáticamente (ya hubo interacción) */
+      bgMusic.play().then(function(){
+        musicBtn.classList.add("on");
+        musicBtn.setAttribute("aria-label","音楽をオフにする");
+      }).catch(function(){
+        musicBtn.classList.add("attn");
+        setTimeout(function(){musicBtn.classList.remove("attn");},5600);
+      });
+    },2050);
+  }
+  wrap.addEventListener("click",function(){
+    if(!bloomed){bloom();return;}
+    var p=headPoint();
+    burst(p.x,p.y,14);
+    wrap.classList.remove("bounce");
+    void wrap.offsetWidth;
+    wrap.classList.add("bounce");
+  });
+  wrap.addEventListener("keydown",function(e){
+    if(e.key==="Enter"||e.key===" "){e.preventDefault();wrap.click();}
+  });
+  wrap.addEventListener("animationend",function(e){
+    if(e.animationName==="bounce")wrap.classList.remove("bounce");
+  });
+  autoTimer=setTimeout(bloom,4200);
+
+  /* ---------- carta ---------- */
+  var overlay=$("#letterOverlay");
+  letterBtn.addEventListener("click",function(e){e.stopPropagation();overlay.classList.add("open");});
+  overlay.addEventListener("click",function(e){if(e.target===overlay)overlay.classList.remove("open");});
+  $("#closeLetter").addEventListener("click",function(){overlay.classList.remove("open");});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")overlay.classList.remove("open");});
+
+  /* ---------- botón música (MP3) ---------- */
+  musicBtn.addEventListener("click",function(){
+    if(bgMusic.paused){
+      bgMusic.play().catch(function(err){
+        console.warn("No se pudo reproducir:", err);
+      });
+      musicBtn.classList.add("on");
+      musicBtn.setAttribute("aria-label","音楽をオフにする");
+    }else{
+      bgMusic.pause();
+      musicBtn.classList.remove("on");
+      musicBtn.setAttribute("aria-label","音楽をオンにする");
+    }
+  });
+})();
+</script>
+</body>
+</html>
